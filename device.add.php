@@ -13,37 +13,33 @@ $api_client = new uber_api_client($config['domain'], $config['api_username'], $c
 $filename = 'devices.csv'; // Name of my CSV file
 $fh = fopen($filename, 'r');
 if ($fh !== false) {
-	while (($row = fgetcsv($fh)) !== FALSE) {
-		$dev_desc = $row[0],
-		$label = $row[1],
-		$type_id = $row[2];
-		//Device Assignment, likely added later? Requires Device_ID
-		//$device_ip = $row[3],
-		// Also looking to get parent info here, but would need Device_ID
-		//$parent = $row[4],
-		
-		
-try {
-
-		$result = $api_client->call('device.add',array(
-			'dev_desc' => $dev_desc,
-			'type_id' => $type_id,
-			'label' => $label,
-			//'parent' => $parent,
-			//'device.ip_assignment_add' => $device_ip, // No coma for the final entry?
-		));
-	
-	echo 'Success!';
-
-sleep(480);
-
-} catch (Exception $e) {
-	print 'Error: Device  ' . $client . $e->getMessage() .' ('. $e->getCode() .')'. "\n";
-
-sleep(20);
-
-}
+    while (($row = fgetcsv($fh)) !== FALSE) {
+        $dev_desc = $row[0];
+        $label = $row[1];
+        $type_id = $row[2];
+        //Device Assignment, likely added later? Requires Device_ID
+        //$device_ip = $row[3],
+        // Also looking to get parent info here, but would need Device_ID
+        //$parent = $row[4],
 
 
-	}
+        try {
+
+            $result = $api_client->call('device.add',array(
+                'dev_desc' => $dev_desc,
+                'type_id' => $type_id,
+                'label' => $label
+                //'parent' => $parent,
+                //'device.ip_assignment_add' => $device_ip, // No coma for the final entry?
+            ));
+
+            echo 'Success!';
+
+        } catch (Exception $e) {
+            print 'Error: Device  ' . $client . $e->getMessage() .' ('. $e->getCode() .')'. "\n";
+
+        }
+
+
+    }
 }
