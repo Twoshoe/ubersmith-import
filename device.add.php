@@ -10,7 +10,7 @@ require_once dirname(__FILE__) .'/class.uber_api_client.php'; // include the Ube
 $api_client = new uber_api_client($config['domain'], $config['api_username'], $config['api_token']);
 
 // To open and read through CSV file provided for import
-$filename = 'devices.csv'; // Name of my CSV file
+$filename = 'csv/devices.add.arcadian.csv'; // Name of my CSV file
 $fh = fopen($filename, 'r');
 if ($fh !== false) {
     while (($row = fgetcsv($fh)) !== FALSE) {
