@@ -1,6 +1,5 @@
 <?php
 
-var_dump($argv);
 switch ($argc) {
     case 1:
         echo "Missing API call\n";

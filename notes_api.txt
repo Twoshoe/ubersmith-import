@@ -1,0 +1,40 @@
+ Device.add - Add a new device - 214
+	dev_desc - R - Device Description 
+	type_id - R - Default 0
+	label - Comomonly used for port info
+	parent - Default 0
+	client_id - Link to a specific HOA
+	service_id - cameras / internet / desktop support - probably not needed
+	meta_* - Custom fields - Custom fields may be set by passing the values as additional
+		parameters matching the custom fields API field names prefixed with 'meta_'.
+			Fields in this section that could be useful include
+			use, password, switch port, 
+
+device.ip_assignment_add - Assign an IP to a device 241
+device_id required
+	addr
+	assign_description - a brief description of the IP assignment. Repeat IP address
+	
+device.monitor_add - Set the IP assignemnt to a monitor to actually ping the device 257
+	device_id - R
+	protocol - R - icmp = ping
+	address - monitored IP address
+		notify - Notification Email Address
+		notify_delay - Delay in seconds before sending a notification
+		notify_interval - Delay in seconds between notifications
+Need a check to ignore devices that have no ip_assignment
+
+device.update - Method to update a device
+device 284
+	device_id - R
+		label
+		type_id
+		dev_desc
+
+device.tag - Tag a device 274
+	tag - R - Single tag or array of tags
+	devices_id - R - Single device ID or array of device IDs
+	
+	
+device.facility_add - Add a facility 232
+	
