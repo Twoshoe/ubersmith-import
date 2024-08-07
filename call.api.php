@@ -2,6 +2,13 @@
 
 <?php
 
+require_once __DIR__ . '/csv.inc.php';
+
+# TODO:
+# Add getopt support
+# Add a --csv <filename> option with getopt
+# If the --csv option is set, fopen the file and replace references to STDOUT with that file handle
+
 switch ($argc) {
     case 1:
         echo "Missing API call\n";
@@ -14,8 +21,8 @@ switch ($argc) {
     case 3:
         echo "Calling function with CSV\n";
         // Import custom CSV library
-        require_once __DIR__ . '/csv.inc.php';
-        api_with_csv($argv[1], $csv);
+		$data = read_csv($argv[2]);
+        api_with_csv($argv[1], $data);
         break;
 }
 
@@ -27,6 +34,14 @@ function api($api_name) {
         $result = $api_client->call($api_name);
         echo "Success\n";
         print_r($result);
+		# $handle = fopen(__DIR__ . "/csv/${filename}.csv", "w");
+		$headers = array_keys(flatten($result));
+		fputcsv(STDOUT, $headers);
+		foreach ($result as $r) {
+			/*print_r(flatten($r));*/
+			fputcsv(STDOUT, array_values(flatten($r)));
+		}
+		# fclose($handle);
         return $result;
     } catch (Exception $e) {
         print 'Error: Device  ' . $client . $e->getMessage() .' ('. $e->getCode() .')'. "\n";
@@ -43,8 +58,18 @@ function api_with_csv($api_name, $csv_data) {
             $result = $api_client->call($api_name, $row);
             echo "Success\n";
             print_r($result);
+
         } catch (Exception $e) {
          print 'Error: Device  ' . $client . $e->getMessage() .' ('. $e->getCode() .')'. "\n";
         }
     }
+}
+
+function flatten(array $array) {
+	$return = array();
+	array_walk_recursive($array, function($a,$b) use (&$return) {
+		$return[$b] = $a;
+	}
+	);
+	return $return;
 }
